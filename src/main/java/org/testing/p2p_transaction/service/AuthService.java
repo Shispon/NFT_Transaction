@@ -13,6 +13,10 @@ import org.testing.p2p_transaction.dto.AuthResponse;
 import org.testing.p2p_transaction.entity.User;
 import org.testing.p2p_transaction.repository.UserRepository;
 
+/**
+ * Сервис авторизации пользователей.
+ * Обрабатывает аутентификацию и генерацию JWT-токенов.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,6 +25,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Выполняет аутентификацию пользователя и возвращает JWT-токен при успешной авторизации.
+     *
+     * @param authRequest объект {@link AuthRequest}, содержащий имя пользователя и пароль.
+     * @return объект {@link AuthResponse}, содержащий JWT-токен, ID пользователя и его полное имя.
+     * @throws UsernameNotFoundException если пользователь с указанным именем не найден.
+     */
     public AuthResponse auth(AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -30,7 +41,6 @@ public class AuthService {
         User user = userRepository.findByUserName(authRequest.getUserName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Генерируем токен через JwtTokenProvider (на основе Spring Security JwtEncoder)
         String token = jwtTokenProvider.generateToken((UserDetails) authentication.getPrincipal());
 
         return new AuthResponse(token, user.getId(), user.getFullName());

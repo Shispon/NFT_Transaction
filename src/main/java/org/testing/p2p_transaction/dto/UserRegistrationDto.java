@@ -2,8 +2,7 @@ package org.testing.p2p_transaction.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 @Data
 public class UserRegistrationDto {

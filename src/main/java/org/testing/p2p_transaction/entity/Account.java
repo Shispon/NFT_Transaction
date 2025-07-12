@@ -3,6 +3,7 @@ package org.testing.p2p_transaction.entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-
+@AllArgsConstructor
 @Table(schema = "p2p", name = "account")
 public class Account {
     @Id

@@ -16,9 +16,11 @@ import org.testing.p2p_transaction.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для обработки транзакций между счетами пользователей.
+ */
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -27,6 +29,17 @@ public class TransactionService {
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
 
+    /**
+     * Создает новую транзакцию между двумя счетами.
+     *
+     * @param createTransactionDto объект с данными транзакции: ID пользователя, номер счета отправителя,
+     *                             номер счета получателя и сумма перевода.
+     * @return объект {@link CreateTransactionDto} с деталями созданной транзакции.
+     *
+     * @throws UserNotFoundException если пользователь с указанным ID не найден.
+     * @throws AccountNotFoundException если один из указанных счетов не найден.
+     * @throws InsufficientFundsException если на счете отправителя недостаточно средств.
+     */
     @Transactional
     public CreateTransactionDto createTransaction(RequestTransactionDto createTransactionDto) {
 
@@ -62,7 +75,6 @@ public class TransactionService {
         accountRepository.save(receiverAccount);
 
         Transaction transaction = new Transaction();
-        transaction.setId(UUID.randomUUID());
         transaction.setUserId(createTransactionDto.getUserId());
         transaction.setFromAccountNumber(fromAccount);
         transaction.setToAccountNumber(toAccount);
@@ -78,6 +90,12 @@ public class TransactionService {
         );
     }
 
+    /**
+     * Возвращает список всех транзакций, совершённых с указанного счета.
+     *
+     * @param accountNumber номер счета, по которому нужно получить список транзакций.
+     * @return список объектов {@link CreateTransactionDto}, описывающих транзакции.
+     */
     public List<CreateTransactionDto> getAllTransactionsByAccountNumber(String accountNumber) {
         List<Transaction> transactions = transactionRepository.findByFromAccountNumber(accountNumber);
         return transactions.stream()
@@ -88,4 +106,5 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 }
+
 

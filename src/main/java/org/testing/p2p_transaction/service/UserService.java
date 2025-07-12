@@ -12,15 +12,25 @@ import org.testing.p2p_transaction.util.HashPassword;
 
 import java.time.LocalDateTime;
 
+/**
+ * Сервис для управления пользователями системы.
+ * Содержит бизнес-логику регистрации пользователей.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Регистрирует нового пользователя.
+     *
+     * @param registrationDto объект {@link UserRegistrationDto}, содержащий почту, имя пользователя, пароль и ФИО.
+     * @return объект {@link UserResponseDto} с данными зарегистрированного пользователя.
+     * @throws CantSaveUserException если почта или имя пользователя уже существуют в системе.
+     */
     @Transactional
     public UserResponseDto registerUser(UserRegistrationDto registrationDto) {
-        // Проверяем, существует ли уже пользователь с таким email или userName
         boolean emailExists = userRepository.existsByMail(registrationDto.getMail());
         boolean userNameExists = userRepository.existsByUserName(registrationDto.getUserName());
 
@@ -45,5 +55,5 @@ public class UserService {
                 savedUser.getCreatedAt()
         );
     }
-
 }
+
