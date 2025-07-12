@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: Shispon
+      changes:
+        - createTable:
+            tableName: transactions
+            schemaName: cards
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: from_card_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: to_card_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(15,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: user_id
+            baseTableSchemaName: cards
+            referencedTableName: users
+            referencedColumnNames: id
+            referencedTableSchemaName: cards
+            constraintName: fk_transactions_from_user
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: from_card_id
+            baseTableSchemaName: cards
+            referencedTableName: cards
+            referencedColumnNames: id
+            referencedTableSchemaName: cards
+            constraintName: fk_transactions_from_card
+        - addForeignKeyConstraint:
+            baseTableName: transactions
+            baseColumnNames: to_card_id
+            baseTableSchemaName: cards
+            referencedTableName: cards
+            referencedColumnNames: id
+            referencedTableSchemaName: cards
+            constraintName: fk_transactions_to_card

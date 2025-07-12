@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Shispon
+      changes:
+        - createTable:
+            tableName: account
+            schemaName: p2p
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: account_number
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: double
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+
+        - addForeignKeyConstraint:
+            baseTableSchemaName: p2p
+            baseTableName: account
+            baseColumnNames: user_id
+            referencedTableSchemaName: p2p
+            referencedTableName: user
+            referencedColumnNames: id
+            constraintName: fk_account_user_user_id
