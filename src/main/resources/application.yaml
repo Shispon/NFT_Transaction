@@ -1,1 +1,14 @@
-spring.application.name=NFT_Transaction
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db
+    username: admin
+    password: 12345
+
+  jwt:
+    secret: ThisIs@Very$Secure$SecretKeyWithSymbols123
+    expiration: 86400000
+
+
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml

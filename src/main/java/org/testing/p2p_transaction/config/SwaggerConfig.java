@@ -1,4 +1,4 @@
-package org.testing.nft_transaction.config;
+package org.testing.p2p_transaction.config;
 
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;

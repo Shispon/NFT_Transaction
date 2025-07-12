@@ -1,11 +1,11 @@
-package org.testing.nft_transaction.security;
+package org.testing.p2p_transaction.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.testing.nft_transaction.repository.UserRepository;
-import org.testing.nft_transaction.entity.User;
+import org.testing.p2p_transaction.repository.UserRepository;
+import org.testing.p2p_transaction.entity.User;
 
 import java.util.Collections;
 

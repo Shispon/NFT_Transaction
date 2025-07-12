@@ -1,4 +1,4 @@
-package org.testing.nft_transaction.util;
+package org.testing.p2p_transaction.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

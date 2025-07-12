@@ -4,8 +4,8 @@ databaseChangeLog:
       author: Shispon
       changes:
         - createTable:
-            tableName: users
-            schemaName: cards
+            tableName: user
+            schemaName: p2p
             columns:
               - column:
                   name: id
@@ -33,11 +33,6 @@ databaseChangeLog:
               - column:
                   name: full_name
                   type: text
-                  constraints:
-                    nullable: false
-              - column:
-                  name: is_active
-                  type: boolean
                   constraints:
                     nullable: false
               - column:

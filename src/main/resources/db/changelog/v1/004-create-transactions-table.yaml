@@ -1,11 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: 5
+      id: 4
       author: Shispon
       changes:
         - createTable:
             tableName: transactions
-            schemaName: cards
+            schemaName: p2p
             columns:
               - column:
                   name: id
@@ -19,18 +19,18 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: from_card_id
-                  type: uuid
+                  name: from_account_number
+                  type: varchar(16)
                   constraints:
                     nullable: false
               - column:
-                  name: to_card_id
-                  type: uuid
+                  name: to_account_number
+                  type: varchar(16)
                   constraints:
                     nullable: false
               - column:
                   name: amount
-                  type: decimal(15,2)
+                  type: double
                   constraints:
                     nullable: false
               - column:
@@ -41,24 +41,24 @@ databaseChangeLog:
         - addForeignKeyConstraint:
             baseTableName: transactions
             baseColumnNames: user_id
-            baseTableSchemaName: cards
-            referencedTableName: users
+            baseTableSchemaName: p2p
+            referencedTableName: user
             referencedColumnNames: id
-            referencedTableSchemaName: cards
+            referencedTableSchemaName: p2p
             constraintName: fk_transactions_from_user
         - addForeignKeyConstraint:
             baseTableName: transactions
-            baseColumnNames: from_card_id
-            baseTableSchemaName: cards
-            referencedTableName: cards
-            referencedColumnNames: id
-            referencedTableSchemaName: cards
-            constraintName: fk_transactions_from_card
+            baseColumnNames: from_account_number
+            baseTableSchemaName: p2p
+            referencedTableName: account
+            referencedColumnNames: account_number
+            referencedTableSchemaName: p2p
+            constraintName: fk_transactions_from_account
         - addForeignKeyConstraint:
             baseTableName: transactions
-            baseColumnNames: to_card_id
-            baseTableSchemaName: cards
-            referencedTableName: cards
-            referencedColumnNames: id
-            referencedTableSchemaName: cards
-            constraintName: fk_transactions_to_card
+            baseColumnNames: to_account_number
+            baseTableSchemaName: p2p
+            referencedTableName: account
+            referencedColumnNames: account_number
+            referencedTableSchemaName: p2p
+            constraintName: fk_transactions_to_account

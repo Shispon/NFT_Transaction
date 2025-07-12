@@ -1,13 +1,13 @@
-package org.testing.nft_transaction;
+package org.testing.p2p_transaction;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NftTransactionApplication {
+public class P2PTransactionApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(NftTransactionApplication.class, args);
+        SpringApplication.run(P2PTransactionApplication.class, args);
     }
 
 }
