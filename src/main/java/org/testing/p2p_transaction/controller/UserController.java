@@ -17,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class UserController {
 
