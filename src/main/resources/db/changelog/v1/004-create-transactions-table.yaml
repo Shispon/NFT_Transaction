@@ -46,6 +46,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableSchemaName: p2p
             constraintName: fk_transactions_from_user
+            onDelete: cascade
         - addForeignKeyConstraint:
             baseTableName: transactions
             baseColumnNames: from_account_number
@@ -54,6 +55,7 @@ databaseChangeLog:
             referencedColumnNames: account_number
             referencedTableSchemaName: p2p
             constraintName: fk_transactions_from_account
+            onDelete: cascade
         - addForeignKeyConstraint:
             baseTableName: transactions
             baseColumnNames: to_account_number
@@ -62,3 +64,4 @@ databaseChangeLog:
             referencedColumnNames: account_number
             referencedTableSchemaName: p2p
             constraintName: fk_transactions_to_account
+            onDelete: cascade

@@ -10,7 +10,6 @@ import java.util.UUID;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, UUID> {
     boolean existsByAccountNumber(String accountNumber);
-    void deleteByAccountNumber(String accountNumber);
     List<Account> findByUserId(UUID userId);
     Optional<Account> findByAccountNumber(String accountNumber);
 }

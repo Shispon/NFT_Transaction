@@ -1,6 +1,7 @@
 package org.testing.p2p_transaction.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.testing.p2p_transaction.dto.AccountRegistrationDto;
 import org.testing.p2p_transaction.dto.AccountResponseDto;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     /**
      * Регистрирует новый счёт для пользователя.
@@ -75,7 +77,11 @@ public class AccountService {
         if (!accountExist) {
             throw new AccountNotFoundException(accountNumber);
         }
-        accountRepository.deleteByAccountNumber(accountNumber);
+        String sql = "DELETE FROM p2p.account WHERE account_number = ?";
+        int rowsAffected = jdbcTemplate.update(sql, accountNumber);
+        if (rowsAffected == 0) {
+            throw new AccountNotFoundException(accountNumber);
+        }
         return "Счет успешно удален " + accountNumber;
     }
 

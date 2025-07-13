@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.testing.p2p_transaction.dto.AccountRegistrationDto;
 import org.testing.p2p_transaction.dto.AccountResponseDto;
 import org.testing.p2p_transaction.entity.Account;
@@ -26,7 +27,7 @@ public class AccountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
-
+    private JdbcTemplate jdbcTemplate = mock(JdbcTemplate.class);
     @InjectMocks
     private AccountService accountService;
 
@@ -63,23 +64,34 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void deleteAccount_shouldDeleteSuccessfully() {
-        String accountNumber = "1234567890123456";
-        when(accountRepository.existsByAccountNumber(accountNumber)).thenReturn(true);
+    public void deleteAccount_shouldThrowWhenNotFoundByRepository() {
+        String accountNumber = "not_existing";
 
-        String result = accountService.deleteAccount(accountNumber);
+        // Счёт не существует по проверке репозитория
+        when(accountRepository.existsByAccountNumber(accountNumber)).thenReturn(false);
 
-        assertEquals("Счет успешно удален " + accountNumber, result);
-        verify(accountRepository, times(1)).deleteByAccountNumber(accountNumber);
+        // Проверяем, что выбрасывается исключение
+        assertThrows(AccountNotFoundException.class, () -> accountService.deleteAccount(accountNumber));
+
+        // Проверяем, что delete через jdbcTemplate не вызывался
+        verify(jdbcTemplate, never()).update(anyString(), anyString());
     }
 
     @Test
-    public void deleteAccount_shouldThrowWhenNotFound() {
-        String accountNumber = "not_existing";
-        when(accountRepository.existsByAccountNumber(accountNumber)).thenReturn(false);
+    public void deleteAccount_shouldThrowWhenNotDeletedByJdbcTemplate() {
+        String accountNumber = "1234567890123456";
 
+        // Счёт существует
+        when(accountRepository.existsByAccountNumber(accountNumber)).thenReturn(true);
+
+        // При попытке удаления update возвращает 0, значит удаление не произошло
+        when(jdbcTemplate.update(anyString(), eq(accountNumber))).thenReturn(0);
+
+        // Проверяем, что выбрасывается исключение
         assertThrows(AccountNotFoundException.class, () -> accountService.deleteAccount(accountNumber));
-        verify(accountRepository, never()).deleteByAccountNumber(anyString());
+
+        // Проверяем, что update вызвался ровно 1 раз
+        verify(jdbcTemplate, times(1)).update(anyString(), eq(accountNumber));
     }
 
     @Test

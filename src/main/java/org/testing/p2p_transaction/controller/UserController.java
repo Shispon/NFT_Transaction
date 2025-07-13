@@ -64,14 +64,14 @@ public class UserController {
     // Удаление счёта
     @DeleteMapping("/deleteAccount")
     public ResponseEntity<?> deleteAccount(@RequestParam String accountNumber) {
-        try {
+       // try {
             String result = accountService.deleteAccount(accountNumber);
             return ResponseEntity.ok(result);
-        } catch (AccountNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Счёт не найден: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Ошибка при удалении счёта");
-        }
+        //} catch (AccountNotFoundException e) {
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Счёт не найден: " + e.getMessage());
+        //} catch (Exception e) {
+          //  return ResponseEntity.status(500).body("Ошибка при удалении счёта");
+       // }
     }
 
     // Создание транзакции
